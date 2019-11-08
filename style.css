@@ -1,0 +1,59 @@
+@font-face {
+    font-family: din_condensed;
+    src: url(fonts/din_condensed.eot);
+    src: url(fonts/din_condensed.eot?#iefix) format("embedded-opentype"), url(fonts/din_condensed.woff2) format("woff2"), url(fonts/din_condensed.woff) format("woff"), url(fonts/din_condensed.ttf) format("truetype"), url(fonts/din_condensed.svg#din_condensed) format("svg");
+    font-weight: 700;
+    font-style: normal
+}
+
+/* Remove margins from the 'html' and 'body' tags, and ensure the page takes up full screen height */
+html, body {height:100%; margin:0; padding:0;}
+/* Set the position and dimensions of the background image. */
+#page-background {position:fixed; top:0; left:0; width:100%; height:100%;}
+/* Specify the position and layering for the content that needs to appear in front of the background image. Must have a higher z-index value than the background image. Also add some padding to compensate for removing the margin from the 'html' and 'body' tags. */
+#content {
+  position:relative; z-index:1;padding:10px;
+  font: 18px/1.4 din_condensed, Helvetica, Arial, sans-serif;
+  color:#fff;
+  height: 90%;
+}
+
+a {
+  color: hotpink;
+  text-decoration: none;
+}
+
+#logo {
+  float:left;
+  width:100px;
+  vertical-align:middle;
+}
+
+#top {
+  font-size: 48px;
+  margin: 20px;
+  float:left;
+  width: 70%;
+}
+
+#slogan {
+  float:left;
+  margin-top:60px;
+  margin-left: 60px;
+  font-size: 100px;
+  background: rgba(0,0,0,0.8);
+  padding: 60px;
+  height: 500px;
+  width:450px;
+}
+
+#syllabus {
+  float:left;
+  margin-top:60px;
+  margin-left: 20px;
+  font-size: 32px;
+  background: rgba(0,0,0,0.9);
+  padding: 60px;
+  height: 500px;
+  width:400px;
+}
