@@ -362,10 +362,20 @@
                         camera.position.z += 20*sign;
 
                     } else {
+                        
+                        if (camera.position.z < 500) {
+
+                            camera.position.z += 20;
+
+                        }
+
+
                         if (reducer == null) {
+
                             reducer = setInterval(function() {
                                 console.log('reducing')
                                 music.volume -= 0.1;
+                                // camera.position.z += 20;
                                 if (music.volume <= 0.1) {
                                     clearInterval(reducer);
                                     msg = getTextFromURL();
