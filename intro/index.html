@@ -1,6 +1,30 @@
 <!DOCTYPE html>
 <html>
     <head>
+<!--
+  
+
+      FOLLOW THE WHITE RABBIT.
+
+                              __
+                     /\    .-" /
+                    /  ; .'  .' 
+                   :   :/  .'   
+                    \  ;-.'     
+       .--""""--..__/     `.    
+     .'           .'    `o  \   
+    /                    `   ;  
+   :                  \      :  
+ .-;        -.         `.__.-'  
+:  ;          \     ,   ;       
+'._:           ;   :   (        
+    \/  .__    ;    \   `-.     
+ bug ;     "-,/_..--"`-..__)    
+     '""--.._:
+
+
+
+-->
         <meta charset=UTF-8 />
         <style>
             html, body {
@@ -45,10 +69,15 @@
             /*
             click to begin!
             */
-            window.onclick = function() {
+            start = function() {
                 if ( clicked ) {
                     return;
                 }
+
+
+                var clicker = document.getElementById('clicker');
+                clicker.style.display = 'none';
+
                 clicked = true;
                 init();
 
@@ -394,6 +423,13 @@
                 requestAnimationFrame( animate );
             }
         </script>
+
+
+        <div id='clicker' style='width:100%;height:100%;'>
+          <span style='position:absolute;top:45%;left:45%;width:10%;cursor: pointer;padding:20px;border:solid thick white;color:white;font-family: sans-serif;text-align:center' onclick='javascript:start();'>Click to start!</span>
+        </div>
+
+
         <div id='title' style='display:none;
                                position:absolute;
                                color:white;
