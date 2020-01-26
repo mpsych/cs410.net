@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html>
+    <head>
+<!--
+  
+
+      FOLLOW THE WHITE RABBIT.
+
+                              __
+                     /\    .-" /
+                    /  ; .'  .' 
+                   :   :/  .'   
+                    \  ;-.'     
+       .--""""--..__/     `.    
+     .'           .'    `o  \   
+    /                    `   ;  
+   :                  \      :  
+ .-;        -.         `.__.-'  
+:  ;          \     ,   ;       
+'._:           ;   :   (        
+    \/  .__    ;    \   `-.     
+ bug ;     "-,/_..--"`-..__)    
+     '""--.._:
+
+
+
+-->
+        <meta charset=UTF-8 />
+        <style>
+            html, body {
+                background-color: #000;
+                margin: 0;
+                padding: 0;
+                height: 100%;
+                overflow: hidden !important;
+                font-family: din_condensed;
+            }
+        </style>
+        <link rel="stylesheet" type="text/css" href="fonts.css"/>
+        <title>410 INTRO</title>
+    </head>
+    <body>
+        <script src="three.min.js"></script>
+        <script src="TrackballControls.js"></script>
+        <script src="responsivevoice.js"></script>
+        <script>
+            var scene, camera, renderer, rain, starGeometry, angle;
+            angle = 0;
+            fov = 60;
+            ratio = window.innerWidth / window.innerHeight;
+            zNear = 1;
+            zFar = 1000;
+            clicked = false;
+            flag = false;
+            flag2 = false;
+
+            // Accents for text-to-speech
+            accents = [ 
+            // 'French Female',
+                        // 'Deutsch Male',
+                        'US English Female',
+                        // 'Turkish Male',
+                        // 'Swedish Female'
+                        ];
+        
+            // Random accent chosen from the accents list
+            randomAccent = accents[ Math.floor( Math.random()*accents.length ) ];
+
+            /*
+            click to begin!
+            */
+            start = function() {
+                if ( clicked ) {
+                    return;
+                }
+
+
+                var clicker = document.getElementById('clicker');
+                clicker.style.display = 'none';
+
+                clicked = true;
+                init();
+
+            }
+
+            function init() {
+                loadMusic();
+
+                sceneSetup();
+
+                cameraSetup( fov, ratio, zNear, zFar );
+
+                lightSetup();
+
+                rendererSetup();
+
+                /*
+                load 3D texts for the scene!
+                */
+                var loader = new THREE.FontLoader();
+                var font = loader.load(
+                    // resource URL
+                    'Oswald_Regular_Regular.json',
+
+                    // onLoad callback
+                    function ( font ) {
+                        text = new THREE.TextGeometry( "UMass Boston", {
+                            font: font,
+                            size: 40,
+                            height: 9,
+                            curveSegments: 12,
+                            bevelThickness: 1,
+                            bevelSize: 1,
+                            bevelEnabled: true
+                        });
+                        material = new THREE.MeshPhongMaterial( { color: 0xffffff,
+                                                                  specular: Math.random()
+                                                                 } );
+
+                        umass_mesh = new THREE.Mesh( text, material );
+                        umass_mesh.rotateY( Math.PI/2 );
+                        // umass_mesh.
+                        scene.add( umass_mesh );
+                    }
+                );
+                var font = loader.load(
+                    'Oswald_Regular_Regular.json',
+
+                    function ( font ) {
+                        c_text = new THREE.TextGeometry( " CS410            ", {
+                            font: font,
+                            size: 50,
+                            height: 15,
+                            curveSegments: 12,
+                            bevelThickness: 1,
+                            bevelSize: 1,
+                            bevelEnabled: true
+                        });
+                        c_material = new THREE.MeshPhongMaterial( { color: 0xffffff,
+                                                                    specular: Math.random()
+                                                                   } );
+
+                        c_mesh = new THREE.Mesh( c_text, c_material );
+                        c_mesh.rotateY( -Math.PI/8 );
+                    }
+                );
+                var font = loader.load(
+                    'Oswald_Regular_Regular.json',
+
+                    function ( font ) {
+                        s_text = new THREE.TextGeometry( " SOFTWARE            ", {
+                            font: font,
+                            size: 50,
+                            height: 15,
+                            curveSegments: 12,
+                            bevelThickness: 1,
+                            bevelSize: 1,
+                            bevelEnabled: true
+                        });
+                        s_material = new THREE.MeshPhongMaterial( { color: 0xffffff,
+                                                                    specular: Math.random()
+                                                                   } );
+
+                        s_mesh = new THREE.Mesh( s_text, s_material );
+                        s_mesh.rotateY( -Math.PI/8 );
+                    }
+                );
+                var font = loader.load(
+                    'Oswald_Regular_Regular.json',
+
+                    function ( font ) {
+                        e_text = new THREE.TextGeometry( " ENGINEERING", {
+                            font: font,
+                            size: 50,
+                            height: 15,
+                            curveSegments: 12,
+                            bevelThickness: 1,
+                            bevelSize: 1,
+                            bevelEnabled: true
+                        });
+                        e_material = new THREE.MeshPhongMaterial( { color: 0xffffff,
+                                                                    specular: Math.random()
+                                                                   } );
+
+                        e_mesh = new THREE.Mesh( e_text, e_material );
+                        e_mesh.position.y -= 60;
+                        e_mesh.rotateY( -Math.PI/8 );
+                    }
+                );
+
+                /*
+                load the pixel heart!
+                */
+                var x = 0, y = 0;
+                var heartShape = new THREE.Shape();
+                heartShape.moveTo( x + 5, y + 5 );
+                heartShape.bezierCurveTo( x + 5, y + 5, x + 4, y, x, y );
+                heartShape.bezierCurveTo( x - 6, y, x - 6, y + 7,x - 6, y + 7 );
+                heartShape.bezierCurveTo( x - 6, y + 11, x - 3, y + 15.4, x + 5, y + 19 );
+                heartShape.bezierCurveTo( x + 12, y + 15.4, x + 16, y + 11, x + 16, y + 7 );
+                heartShape.bezierCurveTo( x + 16, y + 7, x + 16, y, x + 10, y );
+                heartShape.bezierCurveTo( x + 7, y, x + 5, y + 5, x + 5, y + 5 );
+                geometry = new THREE.ShapeBufferGeometry( heartShape, 1 );
+                material = new THREE.MeshBasicMaterial( { color: 0xffffff * Math.random(),
+                                                          side: THREE.DoubleSide,
+                                                          opacity: true,
+                                                          transparent: true
+                                                         } );
+                heart_mesh = new THREE.Mesh( geometry, material ) ;
+                scene.add( heart_mesh );
+                heart_mesh.rotateX( Math.PI );
+
+                createStars(70000);
+
+                trackballSetup(1, 100);
+
+                /*
+                Animate the 3D text
+                */
+                setTimeout(function() {
+                    // umass_mesh.rotateY( -4*Math.PI/5 );
+
+                }, 7300);
+
+                setTimeout(function() {
+                    flag2 = false;
+                    
+                    scene.add( c_mesh );
+                }, 9000);
+
+                setTimeout(function() {
+                    removeObject( c_mesh );
+                    scene.add( s_mesh );
+                    scene.add( e_mesh );
+                }, 13000)
+
+                setTimeout(function() {
+                    flag2 = true;
+                }, 13400);
+
+                /* 
+                Timeout function that removes some shapes from 
+                screen and displays today's lesson caption that is captured from URL
+                */
+                // setTimeout( function() {
+
+                //     // removeObject( stars );
+                //     // removeObject( heart_mesh );
+                //     // removeObject( s_mesh );
+                //     // removeObject( e_mesh );
+                // }, 11500);
+
+                counter = 0;
+                sign = 1;
+                reducer = null;
+                animate();
+            }
+
+            function createStars( starCount ) {
+                starGeometry = new THREE.Geometry();
+                for( var i = 0;i < starCount; i++ ) {
+                    star = new THREE.Vector3(
+                        Math.random() * 400 -200,
+                        Math.random() * 500 - 250,
+                        Math.random() * 400 - 200
+                    );
+                    starGeometry.vertices.push( star );
+                }
+                starMaterial = new THREE.PointsMaterial( {
+                    color: 0xffffff * Math.random(),
+                    size: 0.5,
+                    transparent: true
+                } );
+                stars = new THREE.Points( starGeometry, starMaterial );
+                scene.add( stars );
+            }
+
+            function loadMusic() {
+                var music = document.getElementById( 'music' );
+                music.autoplay = true;
+                music.play();
+            }
+
+            function sceneSetup() {
+                scene = new THREE.Scene();
+                scene.fog = new THREE.FogExp2( 0x010101, 0.002 );
+            }
+
+            function cameraSetup( fov, ratio, zNear, zFar ) {
+                camera = new THREE.PerspectiveCamera(fov, ratio, zNear, zFar );
+                camera.position.set( 200, 0, 1000 );
+            }
+
+            function lightSetup() {
+                ambient = new THREE.AmbientLight( 0xffffff );
+                scene.add( ambient );
+                directionalLight = new THREE.DirectionalLight( 0xffffff );
+                directionalLight.position.set( 0,0,1 );
+                scene.add( directionalLight );
+            }
+
+            function rendererSetup() {
+                renderer = new THREE.WebGLRenderer();
+                renderer.setClearColor( scene.fog.color );
+                renderer.setSize( window.innerWidth, window.innerHeight );
+                document.body.appendChild( renderer.domElement );
+            }
+
+            function trackballSetup( minDist, maxDist ) {
+                // Trackball controls and settings
+                controls = new THREE.TrackballControls( camera, renderer.domElement );
+                /* Keep trackball within starGeometry box with these settings */
+                controls.noPan = true;
+            }
+
+            /*
+                Info: Remove an object from the scene
+                      given an object name
+            */
+            function removeObject( object ) {
+                scene.remove( object );
+                object.geometry.dispose();
+                object.material.dispose();
+                object = undefined;
+            }
+
+            function getTextFromURL() {
+                var message = "Today..";
+                var param = window.location.search.substring(1);
+
+                if( param != "" ) {
+                    message = document.getElementById( 'title' ).innerHTML = decodeURIComponent( param );
+                }
+
+                document.getElementById( 'title' ).style.display = 'block';
+
+                message = message.replace(/<\/?[^>]+(>|$)/g, "");
+                return message;
+            }
+
+            function animate() {
+            	/* Particle velocity & rotation */
+                material.opacity.set -= 0.2;
+            	stars.rotation.y += 0.00002;
+                starGeometry.vertices.forEach(p => {
+                    p.velocity -= 0.001;
+                    p.y -= 0.02;
+                    if( p.y < -200 ) {
+                        p.y = 200;
+                        p.velocity = 0;
+                    }
+                });
+                /* Text transitions */
+                if( flag2 == false ) {
+                    if( flag == false ) {
+                        if( camera.position.z != -320 ) {
+                        	camera.position.z -= 4;
+
+                        }
+                    }
+                    if( camera.position.z == -320 ) {
+                        flag = true;
+                    }
+                    if( flag == true ) {
+                        if( camera.position.z != -130 ) {
+                            camera.position.z += 2;
+                        }
+                        if( camera.position.x != -120 ) {
+                            camera.position.x -= 2;
+                        }
+                        if( camera.position.y != -80 ) {
+                            camera.position.z += 2;
+                        }
+                    }
+
+
+
+                } else {
+
+                    if (counter < 2) {
+
+                        if (camera.position.x > 400) {
+                            sign = -1;
+                            counter += 1;
+                        } else if (camera.position.x < 0) {
+                            sign = 1;
+                            
+                        }
+
+                        camera.position.x += 10*sign;
+                        camera.position.z += 20*sign;
+
+                    } else {
+                        
+                        if (camera.position.z < 500) {
+
+                            camera.position.z += 20;
+
+                        }
+
+
+                        if (reducer == null) {
+
+                            reducer = setInterval(function() {
+                                console.log('reducing')
+                                music.volume -= 0.1;
+                                // camera.position.z += 20;
+                                if (music.volume <= 0.1) {
+                                    clearInterval(reducer);
+                                    // msg = getTextFromURL();
+                                    // responsiveVoice.speak( msg, randomAccent );
+                                    document.getElementById( 'title' ).style.display = 'block';
+
+                                    document.getElementById('voice').play();
+                                }
+                            },300);
+                        }
+                        
+                        
+                    }
+
+                }
+                starGeometry.verticesNeedUpdate = true;
+                controls.update();
+                renderer.render( scene, camera );
+                requestAnimationFrame( animate );
+            }
+        </script>
+
+
+        <div id='clicker' style='width:100%;height:100%;'>
+          <span style='position:absolute;top:45%;left:45%;width:10%;cursor: pointer;padding:20px;border:solid thick white;color:white;font-family: sans-serif;text-align:center' onclick='javascript:start();'>Click to start!</span>
+        </div>
+
+
+        <div id='title' style='display:none;
+                               position:absolute;
+                               color:white;
+                               top:15%;
+                               left:20%;
+                               margin-left:50px;
+                               font-size:440%'>Today, we will begin the semester. And, talk about the course. This is lecture 1.</div>
+        <audio id='voice'>
+            <source src="lecture01.mp3">
+        </audio>
+        <audio id="music"><source src="badcat.mp3"></audio>
+    </body>
+</html>
