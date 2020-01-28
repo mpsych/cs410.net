@@ -217,10 +217,10 @@
                 /*
                 Animate the 3D text
                 */
-                setTimeout(function() {
-                    // umass_mesh.rotateY( -4*Math.PI/5 );
+                // setTimeout(function() {
+                //     // umass_mesh.rotateY( -4*Math.PI/5 );
 
-                }, 7300);
+                // }, 7300);
 
                 setTimeout(function() {
                     flag2 = false;
@@ -229,14 +229,21 @@
                 }, 9000);
 
                 setTimeout(function() {
+                    flag2 = true;
+                    
+                    // scene.add( c_mesh );
+                }, 11000);
+
+                setTimeout(function() {
                     removeObject( c_mesh );
                     scene.add( s_mesh );
                     scene.add( e_mesh );
+                    flag2 = true;
                 }, 13000)
 
-                setTimeout(function() {
-                    flag2 = true;
-                }, 13400);
+                // setTimeout(function() {
+                //     flag2 = true;
+                // }, 13400);
 
                 /* 
                 Timeout function that removes some shapes from 
@@ -352,8 +359,9 @@
                 });
                 /* Text transitions */
                 if( flag2 == false ) {
+                    // flag = true;
                     if( flag == false ) {
-                        if( camera.position.z != -320 ) {
+                        if( camera.position.z > -320 ) {
                         	camera.position.z -= 4;
 
                         }
@@ -377,7 +385,7 @@
 
                 } else {
 
-                    if (counter < 2) {
+                    if (counter < 1) {
 
                         if (camera.position.x > 400) {
                             sign = -1;
@@ -388,11 +396,12 @@
                         }
 
                         camera.position.x += 10*sign;
-                        camera.position.z += 20*sign;
+                        camera.position.z += -20;
+                        // console.log(camera.position.z)
 
                     } else {
                         
-                        if (camera.position.z < 500) {
+                        if (camera.position.z < 800) {
 
                             camera.position.z += 20;
 
@@ -408,7 +417,7 @@
                                 if (music.volume <= 0.1) {
                                     clearInterval(reducer);
                                     msg = getTextFromURL();
-                                    responsiveVoice.speak( msg, randomAccent );
+                                    responsiveVoice.speak( msg, randomAccent ,{rate:0.8});
                                 }
                             },300);
                         }
@@ -426,8 +435,9 @@
 
 
         <div id='clicker' style='width:100%;height:100%;'>
-          <span style='position:absolute;top:45%;left:45%;width:10%;cursor: pointer;padding:20px;border:solid thick white;color:white;font-family: sans-serif;text-align:center' onclick='javascript:start();'>Click to start!</span>
+          <span style='position:absolute;top:35%;left:35%;width:10%;cursor: pointer;padding:20px;color:white;font-family: sans-serif;text-align:center' onclick='javascript:start();'><img src='../gfx/CS410.png'></span>
         </div>
+
 
 
         <div id='title' style='display:none;
