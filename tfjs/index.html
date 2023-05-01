@@ -1,0 +1,64 @@
+<html>
+  <head>
+    <title></title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.4.0/dist/tf.min.js"></script>
+
+    <script>
+
+      async function main() {
+
+        // PRETRAINED MOBILENET
+        pretrainedModel = {
+          url:
+            "https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json",
+          layer: "conv_pw_13_relu",
+        };
+
+        mobilenet = await tf.loadLayersModel(pretrainedModel.url);
+
+        layer = mobilenet.getLayer(pretrainedModel.layer);
+
+        pretrained = await tf.model({
+          inputs: mobilenet.inputs,
+          outputs: layer.output,
+        });
+
+
+        // FINETUNED MODEL FOR CAT VS DOG
+        model = await tf.loadLayersModel(
+          "model.json",
+        );
+
+      };
+
+      main();
+
+      function predict() {
+
+        pixels = tf.browser.fromPixels(document.getElementById('i1'));
+
+        // reshape
+        image = tf.reshape(pixels, [1, 224, 224, 3]).toFloat();
+        
+        // normalize to -0.5..0.5
+        image = image.div(tf.scalar(127)).sub(tf.scalar(1));
+
+
+        // [dog, cat]
+        prediction = model.predict( pretrained.predict(image) ).dataSync();
+
+        return prediction
+
+      };
+
+
+    </script>
+
+  </head>
+  <body>
+
+    <img id='i1' src='catdog.png' width=224 height=224>
+
+  </body>
+</html>
